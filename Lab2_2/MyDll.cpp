@@ -320,7 +320,7 @@ default_random_engine engine(random_device{}());
 
 			FileStartPosition(UserFile);
 
-			cout << "файл не найден.\n";
+			cout << "File not found.\n";
 			return 0;
 		}
 
@@ -332,7 +332,7 @@ default_random_engine engine(random_device{}());
 
 			FileStartPosition(UserFile);
 
-			cout << "Файл пуст.\n";
+			cout << "The file is empty..\n";
 			return 0;
 		}
 
@@ -346,7 +346,7 @@ default_random_engine engine(random_device{}());
 		while(UserFile >> N) length++;
 	
 
-		if(length == 0) cout << "Файл пуст.\n";
+		if(length == 0) cout << "The file is empty..\n";
 
 		FileStartPosition(UserFile);
 
