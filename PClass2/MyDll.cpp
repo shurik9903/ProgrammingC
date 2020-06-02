@@ -18,10 +18,13 @@ default_random_engine engine(random_device{}());
 
 	Date::Date(){
 		
-		Day = 0;
-		Month = 0;
-		Year = 0;
-			
+		struct tm newtime;
+		time_t now = time(0);
+		localtime_s(&newtime, &now);
+
+		Day = newtime.tm_mday;
+		Month = 1 + newtime.tm_mon;
+		Year = 1900+newtime.tm_year;
 	}
 
 	int Date::GetDay(){
@@ -672,6 +675,20 @@ default_random_engine engine(random_device{}());
 		for(int i = 0; i < strlen(text); i++) text[i] = tolower(text[i]);
 	}
 
+	int MD_Class::NumberWordText(std::string text, char Separator){
+		int Count = 0;
+		bool word = false;
+
+		for(char s : text){
+			if((s == Separator || s == '\n') && word){
+				Count++;
+				word = false;
+			} else word = true;
+		}
+
+		if(word) return ++Count; else return Count;
+	}
+
 	int MD_Class::NumberWordText(std::string text){
 		int Count = 0;
 		bool word = false;
@@ -718,12 +735,32 @@ default_random_engine engine(random_device{}());
 		return text;
 	}
 
-	void MD_Class::GetWordText(std::string text, list<std::string>& ListText){
+	void MD_Class::GetWordText(std::string Text, list<std::string>& ListText, char Separator){
 		string TextWord;
 		ListText.clear();
 		bool word = false;
 
-		for(char s : text){
+		for(char s : Text){
+
+			if((s == Separator || s == '\n') && word){
+				ListText.push_back(TextWord);
+				word = false;
+				TextWord = "";
+			} else{
+				word = true;
+				TextWord += s;
+			}
+		}
+
+		if(word) ListText.push_back(TextWord);
+	}
+
+	void MD_Class::GetWordText(std::string Text, list<std::string>& ListText){
+		string TextWord;
+		ListText.clear();
+		bool word = false;
+
+		for(char s : Text){
 
 			if((s == ' ' || s == '\n') && word){
 				ListText.push_back(TextWord);
@@ -736,4 +773,48 @@ default_random_engine engine(random_device{}());
 		}
 
 		if(word) ListText.push_back(TextWord);
+	}
+
+	void MD_Class::GetWordText(std::string Text, std::string* Word, char Separator){
+		string TextWord;
+		Word->clear();
+		bool word = false;
+		int Size = NumberWordText(Text,Separator);
+		Word = new string[Size];
+		int i = 0;
+		for(char s : Text){
+			if((s == Separator || s == '\n') && word){
+				Word[i] = TextWord;
+				++i;
+				word = false;
+				TextWord = "";
+			} else{
+				word = true;
+				TextWord += s;
+			}
+		}
+
+		if(word) Word[Size - 1] = TextWord;;
+	}
+
+	void MD_Class::GetWordText(std::string Text, std::string* Word){
+		string TextWord;
+		Word->clear();
+		bool word = false;
+		int Size = NumberWordText(Text);
+		Word = new string[Size];
+		int i = 0;
+		for(char s : Text){
+			if((s == ' ' || s == '\n') && word){
+				Word[i] = TextWord;
+				++i;
+				word = false;
+				TextWord = "";
+			} else{
+				word = true;
+				TextWord += s;
+			}
+		}
+
+		if(word) Word[Size - 1] = TextWord;;
 	}

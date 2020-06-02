@@ -151,6 +151,8 @@ namespace Dll{
 		/*Work with text*/
 		void ArrayTolower(char * text);
 			
+		int NumberWordText(std::string text, char Separator);
+
 		int NumberWordText(std::string text);
 
 		int NumberWordFile(std::ifstream &UserFile);
@@ -159,7 +161,13 @@ namespace Dll{
 
 		std::string GetTextLine(std::ifstream & UserFile, int NumberLine);
 
-		void GetWordText(std::string text, std::list<std::string>& ListText);
+		void GetWordText(std::string Text, std::list<std::string>& ListText, char Separator);
+
+		void GetWordText(std::string Text, std::list<std::string>& ListText);
+
+		void GetWordText(std::string Text, std::string* Word, char Separator);
+
+		void GetWordText(std::string Text, std::string* Word);
 	};
 }
 
