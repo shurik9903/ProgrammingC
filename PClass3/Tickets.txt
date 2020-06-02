@@ -1,4 +1,6 @@
-17|Sinbad Legend Seven Seas|Tartarus|2560
+17|Seas|Sinbad|Seven|Tartarus|56
+987|Sidorov|Abu|Ruslan|USA|756
 Error 666 Error 666
-78|Ali-Baba|Frances|7900
-117|Aladdin|Agraba|256
+78|Robber|Ali-Baba|Forty|Frances|357
+117|Arabic|Aladdin|Ali|Agraba|190
+789|Sidorov|Moh|Andrey|England|567
