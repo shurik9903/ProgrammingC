@@ -736,19 +736,38 @@ namespace Dll{
 			if(seconds >= 60){
 				minutes += seconds / 60;
 				seconds = seconds % 60;
-				
+			} else if(seconds < 0){
+				minutes -= seconds / 60;
+				seconds = seconds % 60;
+				if(seconds < 0){
+					seconds = 60 - abs(seconds);
+					--minutes;
+				}
 			}
 
 			if(minutes >= 60){
 				hours += minutes / 60;
 				minutes = minutes % 60;
 				
+			} else if(minutes < 0){
+				hours -= minutes / 60;
+				minutes = minutes % 60;
+				if(minutes < 0){
+					minutes = 60 - abs(minutes);
+					--hours;
+				}
 			}
 
 			if(hours >= 24){
 				day += hours / 24;
 				hours = hours % 24;
-				
+			} else if(hours < 0){
+				day -= hours / 24;
+				hours = hours % 24;
+				if(hours < 0){
+					hours = 24 - abs(hours);
+					--day;
+				}
 			}
 
 			if(month > 12){
@@ -761,7 +780,7 @@ namespace Dll{
 				month = 12;
 				--year;
 			} else if(month < 0){
-				month = 1;
+				month = 12 - month;
 				--year;
 			}
 
@@ -775,15 +794,15 @@ namespace Dll{
 						day += (366 - (leapyear() ? 0 : 1));
 						--year;
 					}
-				} else if((abs(day) > getdaymonth(month)) || day == 0){
+				} else if((abs(day) > getdaymonth(month)) || day < 0){
 					if(day > 0){
 						day -= getdaymonth(month);
 						++month;
 					} else if(day < 0){
-						day = 1;
+						day = getdaymonth(month - 1) - abs(day);
 						--month;
 					} else{
-						day += getdaymonth(month-1);
+						day += getdaymonth(month - 1);
 						--month;
 					}
 
@@ -824,10 +843,10 @@ namespace Dll{
 			day = newday == 0 ? newtime.tm_mday : newday;
 			month = newmonth == 0 ? 1 + newtime.tm_mon : newmonth;
 			year = newyear == 0 ? 1900 + newtime.tm_year : newyear;
-			seconds = newseconds;
-			minutes = newminutes;
-			hours = newhours;
-
+			seconds = newseconds == 0 ? newtime.tm_sec : newseconds;
+			minutes = newminutes == 0 ? newtime.tm_min  : newminutes;
+			hours = newhours == 0 ? newtime.tm_hour : newhours;
+			
 			Excess();
 			Rounding();
 		}
@@ -872,19 +891,12 @@ namespace Dll{
 			day = newday == 0 ? newtime.tm_mday : newday;
 			month = newmonth == 0 ? 1 + newtime.tm_mon : newmonth;
 			year = newyear == 0 ? 1900 + newtime.tm_year : newyear;
-			seconds = newseconds;
-			minutes = newminutes;
-			hours = newhours;
+			seconds = newseconds == 0 ? newtime.tm_sec : newseconds;
+			minutes = newminutes == 0 ? newtime.tm_min : newminutes;
+			hours = newhours == 0 ? newtime.tm_hour : newhours;
 
 			Excess();
 			Rounding();
-		}
-
-		friend Datetime operator+(Datetime a, Datetime b){
-			int day = abs(a.JDN(a.day, a.month, a.year) - b.JDN(b.day, b.month, b.year));
-			int month = abs(a.year - b.year) * 12 + abs(a.month - b.month);
-			int year = abs(a.year - b.year);
-			return Datetime(day, month, year);
 		}
 
 		friend void operator++(Datetime a){
@@ -898,7 +910,7 @@ namespace Dll{
 		}
 
 		friend ostream& operator<<(ostream& os, const Datetime& dt){
-			os << dt.day << '/' << dt.month << '/' << dt.year << endl;
+			os << dt.day << '/' << dt.month << '/' << dt.year << " " << dt.hours << ":" << dt.minutes << ":" << dt.seconds << endl;
 			return os;
 		}
 
