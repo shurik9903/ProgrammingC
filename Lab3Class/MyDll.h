@@ -673,6 +673,27 @@ namespace Dll{
 
 			if(word) Word[Size - 1] = TextWord;;
 		}
+
+		string TypeVariable(std::string Text){
+			if(Text.find_first_not_of("-0123456789") == string::npos && (Text.find_last_of("-") == 0 || Text.find_last_of("-") == string::npos)) return "int";
+			else if(Text.find_first_of(".") != 0 && Text.find_last_of(".") != Text.size() - 1 && Text.find_first_not_of("-0123456789.") == string::npos && (Text.find_first_of("123456789") == 0 || Text.find_first_of("123456789") == 1) && Text.find_last_of("0123456789") == Text.size() - 1 && (Text.find_first_of(".") == Text.find_last_of(".")) && (Text.find_last_of("-") == 0 || Text.find_last_of("-") == string::npos)) return "double";
+			else return "string";
+		}
+
+		string TypeVariable(std::string *Text, int size){
+			string Type = "int";
+			for(int i = 0; i < size; i++){
+				if(TypeVariable(Text[i]) == "string"){
+					Type = "string";
+					break;
+				}else if(TypeVariable(Text[i]) == "double")
+					Type = "double";
+			}
+
+			return Type;
+
+		}
+
 	};
 
 	class Datetime{
@@ -915,6 +936,10 @@ namespace Dll{
 		}
 
 	};
+
+	
+
+
 }
 
 #endif
