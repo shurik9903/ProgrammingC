@@ -24,4 +24,4 @@ HRESULT __stdcall CA::QueryInterface(const IID& iid, void** ppv){
 	}
 	reinterpret_cast<IUnknown*>(*ppv)->AddRef(); 
 	return S_OK;
-}
+};
