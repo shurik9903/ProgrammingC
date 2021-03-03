@@ -1,4 +1,6 @@
-#include "UNKNWN.H"
+#pragma once
+typedef int HRESULT, IID;
+typedef long ULONG;
 
 class IUnknown{
 public:

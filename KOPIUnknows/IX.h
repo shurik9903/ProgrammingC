@@ -1,3 +1,4 @@
+#pragma once
 #include "IUnknown.h"
 
 class IX : public IUnknown{

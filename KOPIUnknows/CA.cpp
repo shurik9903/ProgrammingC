@@ -3,9 +3,10 @@
 
 using namespace std;
 
-extern const IID IID_IX;
-extern const IID IID_IY;
-extern const IID IID_IZ;
+extern const IID IID_IUnknown = 0;
+extern const IID IID_IX = 1;
+extern const IID IID_IY = 2;
+extern const IID IID_IZ = 3;
 
 HRESULT __stdcall CA::QueryInterface(const IID& iid, void** ppv){
 	if(iid == IID_IUnknown){
@@ -20,8 +21,8 @@ HRESULT __stdcall CA::QueryInterface(const IID& iid, void** ppv){
 	} else{
 		cout << "QueryInterface: Интерфейс не поддерживается\n";
 		*ppv = NULL;
-		return E_NOINTERFACE;
+		return 0;
 	}
 	reinterpret_cast<IUnknown*>(*ppv)->AddRef(); 
-	return S_OK;
+	return 1;
 };
